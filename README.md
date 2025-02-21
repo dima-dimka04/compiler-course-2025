@@ -12,6 +12,7 @@
     - [LLVM][llvm]
     - [MLIR][mlir]
     - [Clang][clang]
+    - [FileCheck][filecheck]
     - [Official YouTube channel LLVM][youtube_llvm]
 
 <!-- LINKS -->
@@ -26,6 +27,7 @@
 [llvm]: https://llvm.org/
 [mlir]: https://mlir.llvm.org/
 [clang]: https://clang.llvm.org/
+[filecheck]: https://llvm.org/docs/CommandGuide/FileCheck.html
 [youtube_llvm]: https://www.youtube.com/@LLVMPROJ
 
 # What is LLVM?
@@ -52,7 +54,7 @@ Recommended OS - Linux (WSL).
 2. Clone local fork
 ```bash
 git clone https://github.com/<your-github-name>/compiler-course-2025.git
-cd llvm/
+cd compiler-course-2025/
 git checkout -b <name-your-branch>
 ```
 
