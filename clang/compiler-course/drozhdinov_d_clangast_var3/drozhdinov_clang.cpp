@@ -34,15 +34,15 @@ public:
       return true;
     }
     CastMap[CurrentFunction]
-    			 [std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
+    [std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
     return true;
   }
 
   bool VisitImplicitCastExpr(clang::ImplicitCastExpr *Expr) {
     clang::CastKind Kind = Expr->getCastKind();
 
-    if (Kind == clang::CK_LValueToRValue || 
-    		Kind == clang::CK_FunctionToPointerDecay) {
+    if (Kind == clang::CK_LValueToRValue ||
+    Kind == clang::CK_FunctionToPointerDecay) {
       return true;
     }
 
@@ -53,7 +53,7 @@ public:
       return true;
     }
     CastMap[CurrentFunction]
-    			 [std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
+    [std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
     return true;
   }
 
@@ -86,20 +86,20 @@ public:
 
 class CastCounterAction final : public clang::PluginASTAction {
 public:
-  std::unique_ptr<clang::ASTConsumer> 
+  std::unique_ptr<clang::ASTConsumer>
   CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef) override {
     return std::make_unique<CastCounterConsumer>();
   }
 
   bool ParseArgs(const clang::CompilerInstance &CI, 
-  							 const vector<string> &Args) override { 
+  const vector<string> &Args) override { 
   	return true;
   }
 };
 
 } // namespace
 
-static clang::FrontendPluginRegistry::Add<CastCounterAction> 
-	X("CastCounter_DrozhdinovD_FIIT1_ClangAST",
-    "Detects and counts implicit casts in function bodies and constructor "
-    "conversions");
+static clang::FrontendPluginRegistry::Add<CastCounterAction>
+X("CastCounter_DrozhdinovD_FIIT1_ClangAST",
+"Detects and counts implicit casts in function bodies and constructor "
+"conversions");
