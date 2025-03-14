@@ -15,14 +15,14 @@ using std::vector;
 
 namespace {
 class CastCounter final : public clang::RecursiveASTVisitor<CastCounter> {
- public:
+public:
   CastCounter() = default;
-  bool VisitFunctionDecl(clang::FunctionDecl* Expr) {
+  bool VisitFunctionDecl(clang::FunctionDecl *Expr) {
     CurrentFunction = Expr->getNameAsString();
     return true;
   }
 
-  bool VisitCXXConstructExpr(clang::CXXConstructExpr* Expr) {
+  bool VisitCXXConstructExpr(clang::CXXConstructExpr *Expr) {
     if (Expr->getNumArgs() < 1) {
       return true;
     }
@@ -33,14 +33,16 @@ class CastCounter final : public clang::RecursiveASTVisitor<CastCounter> {
     if (SourceType == DestType) {
       return true;
     }
-    CastMap[CurrentFunction][std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
+    CastMap[CurrentFunction]
+    			 [std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
     return true;
   }
 
-  bool VisitImplicitCastExpr(clang::ImplicitCastExpr* Expr) {
+  bool VisitImplicitCastExpr(clang::ImplicitCastExpr *Expr) {
     clang::CastKind Kind = Expr->getCastKind();
 
-    if (Kind == clang::CK_LValueToRValue || Kind == clang::CK_FunctionToPointerDecay) {
+    if (Kind == clang::CK_LValueToRValue || 
+    		Kind == clang::CK_FunctionToPointerDecay) {
       return true;
     }
 
@@ -50,7 +52,8 @@ class CastCounter final : public clang::RecursiveASTVisitor<CastCounter> {
     if (SourceType == DestType) {
       return true;
     }
-    CastMap[CurrentFunction][std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
+    CastMap[CurrentFunction]
+    			[std::make_pair(SourceType.getAsString(), DestType.getAsString())]++;
     return true;
   }
 
@@ -63,35 +66,40 @@ class CastCounter final : public clang::RecursiveASTVisitor<CastCounter> {
     }
   }
 
- private:
+private:
   map<string, map<std::pair<string, string>, int>> CastMap;
   string CurrentFunction;
 };
 
 class CastCounterConsumer final : public clang::ASTConsumer {
- private:
+private:
   CastCounter cc;
 
- public:
+public:
   CastCounterConsumer() = default;
 
-  void HandleTranslationUnit(clang::ASTContext& Context) override {
+  void HandleTranslationUnit(clang::ASTContext &Context) override {
     cc.TraverseDecl(Context.getTranslationUnitDecl());
     cc.getResult();
   }
 };
 
 class CastCounterAction final : public clang::PluginASTAction {
- public:
-  std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(clang::CompilerInstance& CI, llvm::StringRef) override {
+public:
+  std::unique_ptr<clang::ASTConsumer> 
+  CreateASTConsumer(clang::CompilerInstance &CI, llvm::StringRef) override {
     return std::make_unique<CastCounterConsumer>();
   }
 
-  bool ParseArgs(const clang::CompilerInstance& CI, const vector<string>& Args) override { return true; }
+  bool ParseArgs(const clang::CompilerInstance &CI, 
+  							 const vector<string> &Args) override { 
+  	return true;
+  }
 };
 
-}  // namespace
+} // namespace
 
-static clang::FrontendPluginRegistry::Add<CastCounterAction> X(
-    "CastCounter_DrozhdinovD_FIIT1_ClangAST",
-    "Detects and counts implicit casts in function bodies and constructor conversions");
+static clang::FrontendPluginRegistry::Add<CastCounterAction> 
+	X("CastCounter_DrozhdinovD_FIIT1_ClangAST",
+    "Detects and counts implicit casts in function bodies and constructor "
+    "conversions");
