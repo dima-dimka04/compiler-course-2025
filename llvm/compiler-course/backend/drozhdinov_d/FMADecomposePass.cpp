@@ -21,7 +21,7 @@ public:
       for (auto &MI : MBB) {
         unsigned opcode = MI.getOpcode();
         llvm::StringRef Name = TII->getName(opcode);
-        if (Name.starts_with("VFMADD")) {
+        if (Name.starts_with("VFMADD") && !Name.contains("SUB")) {
           WorkList.push_back(&MI);
         }
       }
