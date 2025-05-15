@@ -1,5 +1,5 @@
 // RUN: mlir-opt -load-pass-plugin=%mlir_lib_dir/LoopTracePass_DrozhdinovD_FIIT1_MLIR%shlibext \
-// RUN: --pass-pipeline="builtin.module(LoopTracePass)" %s | FileCheck %s
+// RUN: --pass-pipeline="builtin.module(LoopTracePass_DrozhdinovD_FIIT1_MLIR)" %s | FileCheck %s
 
 module {
   // CHECK: func.func private @trace_loop_iter_end()
