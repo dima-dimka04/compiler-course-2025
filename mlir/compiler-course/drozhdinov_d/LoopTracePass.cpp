@@ -10,7 +10,7 @@
 namespace {
 class LoopTracePass : public mlir::PassWrapper<LoopTracePass, mlir::OperationPass<mlir::ModuleOp>> {
 public:
-  mlir::StringRef getArgument() const final override { return "LoopTracePass"; }
+  mlir::StringRef getArgument() const final override { return "LoopTracePass_DrozhdinovD_FIIT1_MLIR"; }
 
   mlir::StringRef getDescription() const final override {
     return "Insert @trace_loop_iter_begin and @trace_loop_iter_end function calls in the start and the end of loops";
